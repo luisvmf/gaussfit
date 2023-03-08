@@ -1,12 +1,15 @@
 # gaussfit
 
-Command line utility and library to decompose spectra in gaussians, with minimum dependencies written in C. Tested only on Linux, but should work on other POSIX-compliant systems.
+Command line utility and library to decompose spectra in gaussians and lorentzians, with minimum dependencies written in C. Tested only on Linux, but should work on other POSIX-compliant systems.
 
 ![](screenshots/Examples.png)
 
 Building:
+
 			make
+
 External dependencies:
+
 			Standard C libs.
 			C compiler and make (to build).
 			gnuplot on path and /dev/shm mounted (optional, for option -p to work. If this are not present the other options will work with no modification.)
