@@ -64,7 +64,7 @@ void printusage(){
 	printf("   -s X  Boxcar smoothing (X is an integer).\n");
 	printf("   -p    Plot graph and gaussians with gnuplot.\n         Gnuplot must be installed and on path\n         for this option to be used.\n");
 	printf("   -m    Manualy specify gaussians/Lorentzians initial\n         guess with option -g or -l. Must not be used\n         together with option -a.\n");
-	printf("   -a    Automaticaly set gaussians initial guess.\n");
+	printf("   -a rth=0.2,tyf=1,nt=95,faf=0.95,risaf=1.1\n            Automaticaly set gaussians initial guess. Parameters:\n            tyf:0 for gaussian and 1 for lorentzian.\n            nt: Noise tolerance, larger means less sensitive to noise.\n            rth: Minimum height to consider a peak, between 0 and 1.\n            faf: Minimum fall after peak before adding another peak.\n            risaf: Minimum rise after minimum before adding another peak.\n");
 	printf("   -g A=XX,sigma=XX,mu=XX\n         Set gaussians initial guess, where XX are\n         float point values. Options -g or -l must\n         be used if option -m is used. \n");
 	printf("   -l A=XX,sigma=XX,mu=XX\n         Set Lorentzian initial guess, where XX are\n         float point values. Options -g or -l must\n         be used if option -m is used. \n");
 	printf("   -f file\n         Set file containing data to\n         be fitted. Must be used.\n");
@@ -185,9 +185,6 @@ int FileExists(char *file){
 	return 0;
 }
 
-
-
-//XXX TODO automatic initial guess;
 int main(int argc, char **argv){
 	gaussfitparam myparam;
 	initgaussfit(&myparam);
@@ -329,7 +326,7 @@ int main(int argc, char **argv){
 					curaddedgaussvalues[0]=-1;
 					curaddedgaussvalues[1]=-1;
 					curaddedgaussvalues[2]=-1;
-					if(manualgaussian==1){
+					if(manualgaussian!=-1){
 						while (*optarg != '\0'){
 							value=NULL;
 							switch(getsubopt (&optarg, (char *const *) mount_opts, &value)){
@@ -368,7 +365,7 @@ int main(int argc, char **argv){
 						addgaussian(&myparam,curgaussvalues[1],curgaussvalues[2],curgaussvalues[3]);
 						addedgauss=1;
 					}else{
-						printf("Error: Option -m is required to be used before option -g.\n");
+						printf("Error: Option -m or -a is required to be used before option -g.\n");
 						printusage();
 						return -1;
 					}
@@ -377,7 +374,7 @@ int main(int argc, char **argv){
 					curaddedgaussvalues[0]=-1;
 					curaddedgaussvalues[1]=-1;
 					curaddedgaussvalues[2]=-1;
-					if(manualgaussian==1){
+					if(manualgaussian!=-1){
 						while (*optarg != '\0'){
 							value=NULL;
 							switch(getsubopt (&optarg, (char *const *) mount_opts, &value)){
@@ -416,7 +413,7 @@ int main(int argc, char **argv){
 						addlorentzian(&myparam,curgaussvalues[1],curgaussvalues[2],curgaussvalues[3]);
 						addedgauss=1;
 					}else{
-						printf("Error: Option -m is required to be used before option -l.\n");
+						printf("Error: Option -m or -a is required to be used before option -l.\n");
 						printusage();
 						return -1;
 					}
@@ -493,9 +490,9 @@ int main(int argc, char **argv){
 			sprintf(filefinal,"%s.gaussfit",file);
 			if(FileExists(filefinal)==0){
 				FILE *fd = fopen(filefinal, "w");
-				fprintf(fd,"#n\tA\tσ\tμ\n");
+				fprintf(fd,"#n\tA\tσ\tμ\ttype(0=Gaussian,1=Lorentzian)\n");
 				for (int j=0;j<getNumberFittedGaussians(&myparam);j++){
-					fprintf(fd,"%i %f %f %f\n",j,getFitResult(&myparam,j)->A,getFitResult(&myparam,j)->sigma,getFitResult(&myparam,j)->mu);
+					fprintf(fd,"%i %f %f %f %i\n",j,getFitResult(&myparam,j)->A,getFitResult(&myparam,j)->sigma,getFitResult(&myparam,j)->mu,getFitResult(&myparam,i)->type);
 				}
 				fclose(fd);
 			}else{
