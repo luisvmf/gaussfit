@@ -1,11 +1,25 @@
 # gaussfit
+![alt tag](https://img.shields.io/badge/build-pass-green.svg)
 
 Command line utility and library to decompose spectra in gaussians and lorentzians, easily used for automatic processing of multiple similar spectra. Minimum dependencies and written in C. Tested only on Linux, but should work on other POSIX-compliant systems.
 
 ![](screenshots/Examples.png)
 
-Building:
+# ***Installing:***
 
+## Distributions with apt (Debian, Ubuntu, Linux Mint):
+### Add repository:
+
+	echo "deb http://packages.luisvmf.com/ stable main" | sudo tee /etc/apt/sources.list.d/luisvmf.com.list
+	curl -fsSL https://luisvmf.com/pgp-key.public | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/luisvmfcom.gpg > /dev/null
+	sudo apt-get update
+### Install:
+
+	sudo apt-get install luisvmf.com-gaussfit
+ 
+## Building from source:
+			git clone https://git.luisvmf.com/gaussfit/
+   			cd gaussfit
 			make
 
 External dependencies:
