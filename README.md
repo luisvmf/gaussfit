@@ -10,6 +10,7 @@ Command line utility and library to decompose spectra in gaussians and lorentzia
 ## Distributions with apt (Debian, Ubuntu, Linux Mint):
 ### Add repository:
 
+	sudo apt-get install curl gpg
 	echo "deb http://packages.luisvmf.com/ stable main" | sudo tee /etc/apt/sources.list.d/luisvmf.com.list
 	curl -fsSL https://luisvmf.com/pgp-key.public | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/luisvmfcom.gpg > /dev/null
 	sudo apt-get update
