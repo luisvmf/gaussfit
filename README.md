@@ -70,3 +70,4 @@ See tests.sh for examples. Example for usage in C code is in file demo_gaussfit_
 					 be fitted. Must be used.
 
 
+
